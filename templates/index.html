@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&family=Lobster&family=Pacifico&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&family=Lobster&family=Pacifico&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="{{ url_for('static',filename='css/style2.css') }}"> -->
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdn.rawgit.com/jackmoore/colorbox/master/jquery.colorbox-min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style3.css') }}">
+
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='/assets/icons/logo.svg') }}" />
+    <title>VibeX</title>
+    <!-- <p id="notiTitle"></p> -->
+    <style>
+        .hide {
+            display: none;
+        }
+        
+        div div a,
+        div div a:hover {
+            color: black;
+        }
+        
+        a:active {
+            color: blue;
+        }
+        
+        #searchContent,
+        .card-body {
+            -ms-overflow-style: none;
+            /* Internet Explorer 10+ */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+        
+        #searchContent::-webkit-scrollbar,
+        .card-body::-webkit-scrollbar {
+            display: none;
+            /* Safari and Chrome */
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="mainContainer">
+
+        <div class="offcanvas offcanvas-start" style="width:200px;height:70vh;background:transparent;border:none;" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+
+            <a type="button" data-bs-dismiss="offcanvas" aria-label="Close">
+
+                <div class="offcanvas-header mx-0" style="height:100px;">
+
+                    <!-- <a class="offcanvas-title" id="offcanvasScrollingLabel" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
+                    <img src="{{ url_for('static',filename='/assets/icons/logo.svg') }}" width="35" height="35" alt="VibeX">
+                    <span class="" style="font-weight: bold;font-size:xx-large;text-shadow:lightslategray 5px 5px 5px ;color:white;">VibeX</span>
+                </a> -->
+
+                </div>
+            </a>
+            <div class="offcanvas-body" style="background:transparent ;">
+
+                <div class="list-group" id="myList" role="tablist" style="text-align:center ;">
+                    <a class="list-group-item my-4 list-group-item-action tabNameLi tabNameLi1 active" style="border-radius:50px 0px 50px 0;background:black;color:#E5E8E8;" data-bs-toggle="list" href="#home" role="tab"><i class="fa-solid fa-house"></i> &nbsp &nbsp   Home</a>
+                    <a class="list-group-item my-4 list-group-item-action tabNameLi" style="border-radius:50px 0px 50px 0;background:black ;color:#E5E8E8;" data-bs-toggle="list" href="#search" role="tab"><i class="fa-solid fa-magnifying-glass"></i> &nbsp &nbsp Search</a>
+                    <a class="list-group-item my-4 list-group-item-action tabNameLi" style="border-radius:50px 0px 50px 0;background:black ;color:#E5E8E8;" data-bs-toggle="list" href="#favsong" role="tab"><i class="fa-sharp fa-solid fa-heart"></i>&nbsp &nbsp  Favourite</a>
+                    <a class="list-group-item my-4 list-group-item-action tabNameLi" style="border-radius:50px 0px 50px 0;background:black ;color:#E5E8E8;" data-bs-toggle="list" href="#account" role="tab"><i class="fa-solid fa-user"></i> &nbsp &nbsp Account</a>
+                </div>
+            </div>
+        </div>
+        <div class="card bg-dark text-white" id="card">
+
+            <!-- <div class="position-relative"> -->
+
+            <div class=" card-img-overlay" id="loader" style="z-index:1; top:40%;left:35%;">
+
+            </div>
+            <div id="backContainer">
+
+                <!-- <iframe id="myVideo" class="iv" type="text/html" src="https://www.youtube.com/embed/bcXBfv-U4YU?rel=0&modestbranding=1&autohide=1&mute=1&showinfo=0&controls=0&autoplay=1" frameborder="0" allow="autoplay"></iframe> -->
+                <video class="card-img" id="myVideo" loop muted> </video>
+            </div>
+
+            <div class="tab-content" style="color: white;">
+                <!-- <div class="tab-content" id="pills-tabContent" style="color: white;"> -->
+                <div class="tab-pane active tab-pane1 my-5" id="home" role="tabpanel">
+
+
+
+                    <!-- <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0"> -->
+                    <img src="{{url_for('static',filename='/assets/icons/3.gif')}}" loading="lazy" id="bgImg" class="card-img" alt="..." style="width:100%;height:100vh; padding:0;margin:0;z-index: 0;">
+
+                    <!-- <div id="backContainer">
+
+                       <video class="card-img" id="myVideo" loop muted> </video>
+                    </div> -->
+
+                    <div class="card-img-overlay boxContainer" id="player">
+                        <div class="title" id="title" style="text-shadow: 2px 2px black;font-size:x-large;text-decoration:none;">
+                            <p id="mainTitle"></p>
+                        </div>
+
+                        <div class="container" id="content">
+                            <div class="boxContainer content" id="lyricsDisplay">
+                                <div class="container" style=" margin-left: 10px 30px;margin-top: 10vh;">
+                                    <p class="lyricsContent fline" style="font-size:x-large;opacity:1;font-size:x-large;color:pink;"></p>
+                                    <p class="lyricsContent" style="font-size:small ;opacity:0.9;"></p>
+                                    <p class="lyricsContent" style="font-size:small ;opacity:0.8;"></p>
+                                    <p class="lyricsContent" style="font-size:small ;opacity:0.7;"></p>
+                                    <p class="lyricsContent" style="font-size:small ; opacity:0.6;"></p>
+                                    <p class="lyricsContent" style="font-size:small; opacity:0.5;"></p>
+                                    <p class="lyricsContent" style="font-size:small; opacity:0.4;"></p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="tab-pane my-1 " id="search" role="tabpanel">
+
+                    <!-- <div class="tab-pane fade" id="pills-search" role="tabpanel" aria-labelledby="pills-search-tab" tabindex="0"> -->
+
+                    <div class="container card" style="z-index:2;width:70%;height:75vh;background:transparent;">
+
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <input class="form-control me-2 d-flex" style="width:100%;" type="search" id="inputSearch" placeholder="Search" aria-label="Search"> </h5>
+                        </div>
+
+                        <div class="card-body" id="searchContent" style="overflow-y:auto ; overflow-x:hidden;">
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="tab-pane my-2" id="favsong" role="tabpanel">
+                    <!-- <div class="tab-pane fade" id="pills-fav" role="tabpanel" aria-labelledby="pills-fav-tab" tabindex="0"> -->
+                    <div class="container card" style="z-index:2;width:70%;height:75vh;background:transparent;">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Favourite Songs
+                                <!-- <input class="form-control me-2 d-flex" style="width:100%;" type="search" id="inputSearch" placeholder="Search" aria-label="Search">  -->
+                            </h5>
+                        </div>
+
+                        <div class="card-body" style="overflow-y:auto ; overflow-x:hidden;">
+                            <ul class="list-group">
+                                {% for favItems in fav %}
+                                <div class='songList'>
+                                    <li class="songli list-group-item list-group-item-action list-group-item-dark d-flex justify-content-between align-items-start">
+                                        {{( favItems.songName)}}
+                                        <a onclick="songSelection(`{{loop.index0}}`)">
+                                            <span class="badge playBadge" style="padding:0 10px;cursor:pointer;">
+                                          <i style="transform: scale(1.6)" class="fa-solid fa-play"></i>
+                                        </span>
+                                        </a>
+                                    </li>
+                                </div>
+                                {% endfor %}
+
+
+
+                            </ul>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                <div class="tab-pane my-2" id="account" role="tabpanel">
+                    <!-- <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0"> -->
+
+                    <div class="container card" style="z-index:2;width:70%;height:75vh;background:transparent;">
+
+                        <!-- <div class="card-body">
+                            <h5 class="card-title">
+                                <input class="form-control me-2 d-flex" style="width:100%;" type="search" id="inputSearch" placeholder="Search" aria-label="Search"> </h5>
+                        </div> -->
+
+                        <div class="card-body" style="overflow-y:auto ; overflow-x:hidden;">
+                            <form class="row g-3 my-3" action="/acc" method="post" enctype="multipart/form-data">
+                                <div class="col-md-6 ">
+                                    <label for="inputGroupFile05" class="form-label ">Song(.mp3)</label>
+                                    <div class="input-group ">
+                                        <input type="file" class="form-control " id="inputGroupFile05" placeholder="songs file " name="filesongname" aria-describedby="inputGroupFileAddon05 " aria-label="Upload " required>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inputGroupFile04" class="form-label ">Lyrics(.txt)</label>
+                                    <div class="input-group ">
+                                        <input type="file" class="form-control " id="inputGroupFile04" name="filesonglyrics" aria-describedby="inputGroupFileAddon04 " aria-label="Upload " required>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6 ">
+                                    <label for="inputStatus" class="form-label ">Background Type</label>
+                                    <select id="inputStatus" class="form-select" style="height:max-content ; " required name="bgType" placeholder="Select Background type for Song ">
+                                        <option selected value="video">Upload Video</option>
+                                        <option  value="img"  disabled>Upload Img</option>
+                                        <option value="ytvideo"  disabled>Add Youtube Url</option>
+                                        </select>
+                                </div>
+                                <div class="col-md-6 " id="inputType ">
+                                    <label for="inputGroupFile03" class="form-label ">Background(.mp4)</label>
+                                    <div class="input-group">
+                                        <input type="file" accept="video/mp4 " class="form-control " id="inputGroupFile03" name="filesongbg" aria-describedby="inputGroupFileAddon03 " aria-label="Upload " required>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 ">
+                                    <label for="inputArtist " class="form-label ">Artist</label>
+                                    <input type="text" class="form-control " name="artist" id="inputArtist " placeholder="Song Artists" required>
+                                </div>
+                                <div class="col-12 ">
+                                    <label for="inputAlbum" class="form-label ">Album</label>
+                                    <input type="text" class="form-control " name="album" id="inputAlbum" placeholder="Song Album" required>
+                                </div>
+                                <div class="col-md-6 ">
+                                    <label for="inputUploadId " class="form-label ">User Id</label>
+                                    <input type="text" class="form-control " name="userid" id="inputUploadId " placeholder="userId " required>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="gridCheck" required>
+                                        <span><label class="form-check-label" for="gridCheck">
+                                      Check me out
+                                    </label></span>
+                                    </div>
+                                </div>
+                                <div class="col-12 ">
+                                    <!-- <button type="button " class="btn btn-secondary " data-bs-dismiss="modal ">Close</button> -->
+                                    <button type="submit" class="btn btn-primary " style=" width:100% ">Upload</button>
+                                </div>
+                            </form>
+                        </div>
+                        <hr>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+            <div class="card-img-overlay" id="mainMenu" style="vertical-align: bottom;">
+                <div class="menuContainer">
+                    <div class="play" style="transform:scale(1.1) ;">
+                        <p class="card-title">
+                            <span id="playPauseButton" style="padding:0 10px;cursor:pointer;">
+                                <i style="transform: scale(1.6)" class="fa-solid fa-play"></i>
+                            </span>
+                            <span style="padding-left: 10px; font-size:small;" id="songName"></span>
+                        </p>
+                    </div>
+
+                    <div class="buttons">
+                        <ul class="buttonsList ulist d-flex justify-content-evenly">
+                            <li class="buttonsItems" id="likeBtn">
+                                <a onclick="likeAdder()">
+                                    <i class="fa-solid fa-heart-circle-plus"></i>
+                                </a>
+                            </li>
+                            <li class="buttonsItems" id="repeatBtn"><i class="fa-sharp fa-solid fa-repeat"></i></li>
+                            <li class="buttonsItems" id="shuffleBtn"><i class="fa-solid fa-shuffle"></i></li>
+                            <li class="buttonsItems" id="shareBtn"><i class="fa-solid fa-share-nodes"></i></li>
+                            <li class="buttonsItems" id="moreBtn"><i class="fa-solid fa-ellipsis"></i></li>
+                        </ul>
+                    </div>
+                    <input type="range" id="progressBar" name="progressBar" min="0" max="100" value="0" step="0.001">
+
+                    <div class="d-flex justify-content-between" id="marker">
+                        <div class="p-2 bd-highlight ">
+                            <p class="card-text"><small class="text-muted" id="currentTimeofSong">--:--</small></p>
+                        </div>
+                        <div class="p-2 bd-highlight">
+                            <p class="card-text"><small class="text-muted " id="totalTimeofSong">--:--</small></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-img-overlay boxContainer" style="vertical-align: bottom; ">
+
+                <div class="top-0 left-0 posision-fixed text-light" style="z-index:1;">
+                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
+                        <!-- <img src="{{ url_for('static',filename='/assets/icons/logo.svg') }}" width="30" height="30" alt="VibeX"> -->
+                        <span class="" style="font-weight: bold;font-size:x-large;text-shadow:black 5px 5px 5px;color: #21618C;padding-left:40px;">VibeX</span>
+                    </a>
+                </div>
+                <div class="mainButtons mainMenuContainer">
+
+
+                    <div role="tabpanel hide">
+                        <!-- List group -->
+                        <!-- <div class="list-group" id="myList" role="tablist">
+                            <a class="list-group-item list-group-item-action active" data-bs-toggle="list" href="#home" role="tab">Home</a>
+                            <a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#profile" role="tab">Profile</a>
+                            <a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#messages" role="tab">Messages</a>
+                            <a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#settings" role="tab">Settings</a>
+                        </div> -->
+
+                        <!-- Tab panes -->
+                        <!-- <div class="tab-content" style="color: white;">
+                            <div class="tab-pane active my-5" id="home" role="tabpanel"> <i class="fa-solid fa-house"></i></div>
+                            <div class="tab-pane my-5" id="profile" role="tabpanel"><i class="fa-solid fa-magnifying-glass"></i></div>
+                            <div class="tab-pane my-5" id="messages" role="tabpanel"><i class="fa-sharp fa-solid fa-heart"></i></div>
+                            <div class="tab-pane my-5" id="settings" role="tabpanel"><i class="fa-solid fa-user"></i></div>
+                        </div> -->
+
+
+                    </div>
+
+                    <!-- <ul class="nav pills" id="pills-tab mainList ulist" role="tablist" style="color:transparent;">
+                        <li class="mainItem" role="presentation">
+                            <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                                <i class="fa-solid fa-house"></i>
+                            </a>
+                        </li>
+                        <li class="mainItem" role="presentation">
+                            <a class="nav-link" id="pills-search-tab" data-bs-toggle="pill" data-bs-target="#pills-search" type="button" role="tab " aria-controls="pills-search" aria-selected="true">
+                                <i class="fa-solid fa-magnifying-glass"></i></a>
+                        </li>
+                        <li class="mainItem" role="presentation">
+                            <a class="nav-link" id="pills-fav-tab" data-bs-toggle="pill" data-bs-target="#pills-fav" type="button" role="tab" aria-controls="pills-fav" aria-selected="false">
+                                <i class="fa-sharp fa-solid fa-heart"></i></a>
+                        </li>
+                        <li class="mainItem" role="presentation">
+                            <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab " aria-controls="pills-profile" aria-selected="false">
+                                <i class="fa-solid fa-user"></i></a>
+                        </li>
+                    </ul> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hide">
+        {% for key in cred %}
+        <p class="datasongIds">{{key.songId}}</p>
+        <p class="datasongNames">{{key.songName}}</p>
+        <p class="datasongLyrics">{{key.songLyrics}}</p>
+        <p class="datasongAlbum">{{key.songLyrics}}</p>
+        <p class="datasongArtist">{{key.songArtist}}</p>
+        <p class="datasongBg">{{key.songBg}}</p>
+        <div class="dataAllSongs" style="text-transform:capitalize ;">
+            <p class="mb-1 dasSongs">{{key.songName}}</p>
+            <!-- <small>{{key.date}}</small> -->
+            <!-- <p class="mb-1 dasArtist">{{key.songArtist}}</p>
+            <small class="dasAlbum">{{key.songAlbum}}</small> -->
+        </div>
+        {% endfor %}
+
+    </div>
+    <script src="{{url_for('static',filename='js/dl.js')}}"></script>
+    <script src="{{url_for('static',filename='js/sc.js')}}"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js " integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB " crossorigin="anonymous "></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js " integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13 " crossorigin="anonymous "></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js "></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js " integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT " crossorigin="anonymous ">
+    </script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js "></script>
+    <script src="https://cdn.rawgit.com/jackmoore/colorbox/master/jquery.colorbox-min.js "></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js " integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p " crossorigin="anonymous "></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js " integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB " crossorigin="anonymous "></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js " integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13 " crossorigin="anonymous "></script>
+    <script src="https://kit.fontawesome.com/ff258ccb97.js " crossorigin="anonymous "></script>
+
+
+    <!-- <script>
+        $(document).on('submit', '#Fav', function(e) {
+            console.log('hello');
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '/fav/adder/<string:songId>',
+                data: {
+                    todo: $("#todo").val()
+                },
+                success: function() {
+                    alert('saved');
+                }
+            })
+        });
+    </script> -->
+
+</body>
+
+</html>
