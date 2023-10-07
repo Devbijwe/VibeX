@@ -1,4 +1,4 @@
-static/assets/bg
-static/assets/songs
+static/assets
 .vscode
 .idea
+venv
