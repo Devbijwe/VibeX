@@ -27,7 +27,7 @@ class Users(db.Model):
 #     date = db.Column(db.String(12), nullable=True)
 
 class Songs(db.Model):
-    songId = db.Column(db.Integer, primary_key=True)
+    songId = db.Column(db.String(50), primary_key=True)
     songName = db.Column(db.String(75), nullable=False)
     songArtist = db.Column(db.String(50), nullable=False)
     songLyrics = db.Column( BYTEA, nullable=True)  # Store lyrics as BLOB
