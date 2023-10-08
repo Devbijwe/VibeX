@@ -33,7 +33,7 @@
             </video>
             <div class="flex items-center justify-center h-screen">
                 <div class="relative self-end mb-4 w-player w-full opacity-100 flex flex-col rounded-xl">
-                    <h1 id="lyrics-container" class="h-full font-black text-2xl p-4 overflow-y-auto text-white dark:text-gray-100 pl-24 text-start animate-fade-in">
+                    <h1 id="lyrics-container" class="h-full font-black text-2xl p-4 overflow-y-auto text-white dark:text-gray-100 pl-10 md:pl-24 text-start animate-fade-in">
                         <!-- Lyrics will be populated dynamically here -->
                       Lyrics can't be loaded.
                     </h1>
@@ -60,7 +60,7 @@
                         <span class="amplitude-duration-time text-xs font-sans tracking-wide font-medium text-gray-500" id="total-song-duration">--:--</span>
                     </div>
                 </div>
-                <div class="h-control-panel opacity-100 px-10 rounded-b-xl bg-control-panel-light-background border-t border-gray-200 flex items-center justify-between z-50 dark:bg-control-panel-dark-background dark:border-gray-900">
+                <div class="h-control-panel opacity-100 px-10 rounded-b-xl bg-control-panel-light-background border-t border-gray-200 flex items-center space-x-auto justify-between z-50 dark:bg-control-panel-dark-background dark:border-gray-900">
                     <div class="cursor-pointer" id="song-saved">
                         <svg width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M25 7C25 3.68629 22.2018 1 18.75 1C16.1692 1 13.9537 2.5017 13 4.64456C12.0463 2.5017 9.83082 1 7.25 1C3.79822 1 1 3.68629 1 7C1 14.6072 8.49219 20.1822 11.6365 22.187C12.4766 22.7226 13.5234 22.7226 14.3635 22.187C17.5078 20.1822 25 14.6072 25 7Z" stroke="#94A3B8" stroke-width="2" stroke-linejoin="round"/>
@@ -227,7 +227,7 @@
                 });
         }
     
-        function updateLyrics(currentTime) {
+       /* function updateLyrics(currentTime) {
             let lyricsToShow = "";
         
             for (let i = 0; i < lyricsData.length; i++) {
@@ -242,6 +242,38 @@
             // Set the innerHTML of lyricsContainer with all the lyricsToShow
             lyricsContainer.innerHTML = lyricsToShow;
         }
+        */
+        function updateLyrics(currentTime) {
+            let lyricsToShow = "";
+            let currentIndex = -1;
+        
+            for (let i = 0; i < lyricsData.length; i++) {
+                const timestamp = parseTimestamp(lyricsData[i].timestamp);
+        
+                if (!isNaN(timestamp) && timestamp <= currentTime) {
+                    // Update the current index
+                    currentIndex = i;
+                }
+            }
+        
+            if (currentIndex !== -1) {
+                // Display the previous 6 lines
+                for (let i = Math.max(0, currentIndex - 6); i < currentIndex; i++) {
+                    const previousLine = lyricsData[i].lyrics;
+                    lyricsToShow += `<div class="animate__animated animate__fadeIn animate__delay-2s opacity-50">${previousLine}</div>`;
+                }
+        
+                // Display the current line with a special style (e.g., text-pink-500)
+                const currentLine = lyricsData[currentIndex].lyrics;
+                lyricsToShow += `<div class="animate__animated animate__fadeIn animate__delay-2s text-pink-500">${currentLine}</div>`;
+            }
+        
+            // Set the innerHTML of lyricsContainer with the lines to display
+            lyricsContainer.innerHTML = lyricsToShow;
+        }
+        
+        
+        
         
         
         function playPause() {
