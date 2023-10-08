@@ -1052,10 +1052,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 						</svg>
                     </div>
                     <div class="cursor-pointer amplitude-prev">
+                        <a href="{{url_for('playsong', song_id=song_id,action='prev')}}">
                         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M26 7C26 5.76393 24.5889 5.05836 23.6 5.8L11.6 14.8C10.8 15.4 10.8 16.6 11.6 17.2L23.6 26.2C24.5889 26.9416 26 26.2361 26 25V7Z" fill="#94A3B8" stroke="#94A3B8" stroke-width="2" stroke-linejoin="round"/>
 							<path d="M6 5L6 27" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 						</svg>
+                    </a>
                     </div>
                     <div id="btn-play-pause" class="cursor-pointer amplitude-play-pause w-24 h-24 rounded-full bg-white border border-play-pause-light-border shadow-xl flex items-center justify-center dark:bg-play-pause-dark-background dark:border-play-pause-dark-border"
                         onclick="playPause()">
@@ -1068,10 +1070,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 						</svg> -->
                     </div>
                     <div class="cursor-pointer amplitude-next">
+                        <a href="{{url_for('playsong', song_id=song_id,action='next')}}">
                         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M6 7C6 5.76393 7.41115 5.05836 8.4 5.8L20.4 14.8C21.2 15.4 21.2 16.6 20.4 17.2L8.4 26.2C7.41115 26.9416 6 26.2361 6 25V7Z" fill="#94A3B8" stroke="#94A3B8" stroke-width="2" stroke-linejoin="round"/>
 							<path d="M26 5L26 27" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 						</svg>
+                    </a>
                     </div>
                     <div class="cursor-pointer amplitude-repeat-song">
                         <svg width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1140,9 +1144,13 @@ Ensure the default browser behavior of the `hidden` attribute.
                         val = audio.currentTime / audio.duration * 100;
                         // console.log(val)
                         progressBar.value = val;
+                        try{
                         currentTimeofSong.innerHTML = new Date(audio.currentTime * 1000).toISOString().substr(14, 5);
                         totalTimeofSong.innerHTML = new Date(audio.duration * 1000).toISOString().substr(14, 5);
-
+                        }
+                        catch{
+                            //
+                        }
                         /* try {
                              if (audio.currentTime < bgVideo.duration) {
                                  bgVideo.currentTime = audio.currentTime;
@@ -1225,7 +1233,7 @@ Ensure the default browser behavior of the `hidden` attribute.
         }
 
         // Replace with the song ID you want to fetch
-        const songIdToFetch = 2;
+        const songIdToFetch = "{{song_id}}";
         fetchSongData(songIdToFetch);
     </script>
     <script>

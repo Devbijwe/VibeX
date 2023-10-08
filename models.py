@@ -1,6 +1,7 @@
 from datetime import datetime
 from __init__ import app,db
 from sqlalchemy.dialects.postgresql import BYTEA
+from sqlalchemy.sql import func
 
 
 
@@ -36,7 +37,30 @@ class Songs(db.Model):
     uploadId = db.Column(db.String(20), nullable=True)
     date = db.Column(db.DateTime, default=datetime.now())
     songAudio = db.Column( BYTEA, nullable=True)  # Store audio as BLOB
+    def get_previous_song_id(self):
+        # Query for the previous song based on some criteria (e.g., date)
+        previous_song = Songs.query.filter(Songs.date < self.date).order_by(Songs.date.desc()).first()
+        if previous_song:
+            return previous_song.songId
+        else:
+            return None
 
+    def get_next_song_id(self):
+        # Query for the next song based on some criteria (e.g., date)
+        next_song = Songs.query.filter(Songs.date > self.date).order_by(Songs.date).first()
+        if next_song:
+            return next_song.songId
+        else:
+            return None
+        
+    @staticmethod 
+    def get_random_song_id():
+        # Get a random song using SQLAlchemy's func.random() function
+        random_song = Songs.query.order_by(func.random()).first()
+        if random_song:
+            return random_song.songId
+        else:
+            return None
 
 
 class Favsongs(db.Model):

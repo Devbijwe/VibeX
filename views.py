@@ -3,10 +3,11 @@ import email
 import io
 import os
 import urllib.parse
+import uuid
 from werkzeug.utils import secure_filename
 from unicodedata import name
 from warnings import catch_warnings
-from flask import Flask, Response, redirect,render_template, request,session,jsonify
+from flask import Flask, Response, redirect,render_template, request,session,jsonify, url_for
 from jinja2 import Template
 import base64
 import json
@@ -23,8 +24,37 @@ with open('config.json',"r") as c:
 
 @app.route("/",methods=["GET","POST","PUT","DELETE","HEAD"])
 def index():
+    song_id = Songs.get_random_song_id()
+    return redirect(url_for('playsong', song_id=song_id))
+    
+    # random_song_id = Songs.get_random_song_id()
+
+    # # return render_template("indexmob.html",params=params)
+    # return render_template("player.html" ,song_id=random_song_id)
+@app.route("/play")
+def playsong():
+    song_id = request.args.get('song_id')
+    action=request.args.get('action')
+    current_song=Songs.query.get(song_id)
+    if action and current_song:
+        
+        if action=="prev":
+            previous_song_id = current_song.get_previous_song_id()
+            return redirect(url_for('playsong', song_id=previous_song_id))
+            
+        if action=="next":
+            next_song_id = current_song.get_next_song_id()
+            return redirect(url_for('playsong', song_id=next_song_id))
+        
+    if current_song is None:
+        song_id = Songs.get_random_song_id()
+        print(song_id)
+        
+    
+        
     # return render_template("indexmob.html",params=params)
-    return render_template("player.html")
+    return render_template("player.html" ,song_id=song_id)
+
 @app.route("/mob",methods=["GET","POST","PUT","DELETE","HEAD"])
 def indexmob():
     return render_template("indexmob.html",params=params)
@@ -71,8 +101,10 @@ def account():
         filesongaudio = request.files.get("filesongaudio").read()
         filesonglyrics = request.files.get("filesonglyrics").read()
         filesongbg = request.files.get("filesongbg").read()
+        songId=uuid.uuid4().hex[:10]
 
         songEntry = Songs(
+            songId=songId,
             songName=songName,
             songArtist=artist,
             songAlbum=album,
@@ -151,7 +183,7 @@ def get_songs():
     return jsonify(songs=song_list)
 
 
-@app.route("/get-song/<int:song_id>", methods=["GET"])
+@app.route("/get-song/<string:song_id>", methods=["GET"])
 def get_song_by_id(song_id):
     song = Songs.query.get(song_id)
 
@@ -172,7 +204,7 @@ def get_song_by_id(song_id):
         return jsonify(error="Song not found"), 404
 
 # Add routes to download original files
-@app.route("/download/song-lyrics/<int:song_id>", methods=["GET"])
+@app.route("/download/song-lyrics/<string:song_id>", methods=["GET"])
 def download_song_lyrics(song_id):
     song = Songs.query.get(song_id)
 
@@ -181,7 +213,7 @@ def download_song_lyrics(song_id):
     else:
         return jsonify(error="Song not found"), 404
 
-@app.route("/download/song-bg/<int:song_id>", methods=["GET"])
+@app.route("/download/song-bg/<string:song_id>", methods=["GET"])
 def download_song_bg(song_id):
     song = Songs.query.get(song_id)
 
@@ -190,7 +222,7 @@ def download_song_bg(song_id):
     else:
         return jsonify(error="Song not found"), 404
 
-@app.route("/download/song-audio/<int:song_id>", methods=["GET"])
+@app.route("/download/song-audio/<string:song_id>", methods=["GET"])
 def download_song_audio(song_id):
     song = Songs.query.get(song_id)
 
@@ -200,7 +232,7 @@ def download_song_audio(song_id):
         return jsonify(error="Song not found"), 404
 
 
-# @app.route("/get-song/<int:song_id>", methods=["GET"])
+# @app.route("/get-song/<string:song_id>", methods=["GET"])
 # def get_song_by_id(song_id):
 #     song = Songs.query.get(song_id)
 
