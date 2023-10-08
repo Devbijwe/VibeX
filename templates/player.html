@@ -170,8 +170,11 @@
                 bgVideo.innerHTML = `<source src="${songData.bgVideoUrl}" type="video/mp4">`;
                 bgVideo.autoplay = true;
     
-                // Play audio when ready
                
+                  // Event listener for progress bar change
+                    progressBar.addEventListener("change", () => {
+                        audio.currentTime = (progressBar.value * audio.duration) / 100;
+                    });
                   // Event listener for audio time update
                 audio.addEventListener('timeupdate', () => {
                     const val = (audio.currentTime / audio.duration) * 100;
@@ -255,10 +258,7 @@
     
       
     
-        // Event listener for progress bar change
-        progressBar.addEventListener("change", () => {
-            audio.currentTime = (progressBar.value * audio.duration) / 100;
-        });
+      
     
         // Event listener for space key press
         window.onkeypress = function (event) {
