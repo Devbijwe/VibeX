@@ -38,6 +38,7 @@ def playsong():
     song_id = request.args.get('song_id')
     action=request.args.get('action')
     current_song=Songs.query.get(song_id)
+    pageTitle="Home"
     if action and current_song:
         
         if action=="prev":
@@ -50,12 +51,18 @@ def playsong():
         
     if current_song is None:
         song_id = Songs.get_random_song_id()
-        print(song_id)
+        # print(song_id)
+    if song_id:
+        song = Songs.query.get(song_id)
+        pageTitle=song.songName
         
     
         
     # return render_template("indexmob.html",params=params)
-    return render_template("player.html" ,song_id=song_id)
+    return render_template("player.html" ,
+                           song_id=song_id,
+                           pageTitle=pageTitle,
+                           )
 
 @app.route("/mob",methods=["GET","POST","PUT","DELETE","HEAD"])
 def indexmob():
