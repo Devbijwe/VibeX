@@ -177,6 +177,9 @@
                     });
                   // Event listener for audio time update
                 audio.addEventListener('timeupdate', () => {
+                    if (audio.currentTime==audio.duration){
+                        window.location.href="{{url_for('playsong', song_id=song_id,action='next')}}";
+                    }
                     const val = (audio.currentTime / audio.duration) * 100;
                     progressBar.value = val;
                     updateLyrics(audio.currentTime);
