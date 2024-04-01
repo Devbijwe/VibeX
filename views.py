@@ -25,7 +25,8 @@ with open('config.json',"r") as c:
 @app.route("/",methods=["GET","POST","PUT","DELETE","HEAD"])
 def index():
     song_id = Songs.get_random_song_id()
-    song_id="9047c1b666"
+    # song_id="9047c1b666"
+    song_id="1rdf45dr23"
     
     return redirect(url_for('playsong', song_id=song_id))
     
