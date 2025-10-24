@@ -4,3 +4,5 @@ static/assets
 .venv
 __pycache__
 .env
+__init__.py
+*.pyc
