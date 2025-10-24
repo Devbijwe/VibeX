@@ -7,14 +7,11 @@ import base64
 import json
 from datetime import datetime
 from werkzeug.utils import secure_filename
-from unicodedata import name
-from warnings import catch_warnings
 from flask import Flask, Response, redirect, render_template, request, session, jsonify, url_for
 from jinja2 import Template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 
-# from flask_ngrok import run_with_ngrok
 from __init__ import app, db, cache
 from models import *
 
@@ -96,15 +93,39 @@ def account():
         db.session.add(songEntry)
         db.session.commit()
 
-        # ✅ Invalidate ALL caches after upload
-        cache.delete("all_songs")
-        cache.delete(f"song_{songId}")
-        cache.delete(f"lyrics_{songId}")
-        cache.delete(f"bg_{songId}")
-        cache.delete(f"audio_{songId}")
-        cache.delete(f"play_{songId}_None")
-        cache.delete("index")
-        cache.delete("mob_index")
+        # =================== Update cache instead of deleting ===================
+
+        # 1. Update all_songs cache
+        all_songs = cache.get("all_songs")
+        song_data = {
+            "id": songEntry.songId,
+            "songName": songEntry.songName,
+            "songArtist": songEntry.songArtist,
+            "songAlbum": songEntry.songAlbum,
+            "uploadId": songEntry.uploadId,
+            "date": songEntry.date.strftime("%Y-%m-%d %H:%M:%S"),
+            "songLyrics": base64.b64encode(songEntry.songLyrics).decode('utf-8'),
+            "songBg": base64.b64encode(songEntry.songBg).decode('utf-8'),
+            "songAudio": f"data:audio/mp3;base64,{base64.b64encode(songEntry.songAudio).decode('utf-8')}"
+        }
+        if all_songs:
+            all_songs["songs"].append(song_data)
+            cache.set("all_songs", all_songs, timeout=CACHE_TIMEOUT)
+
+        # 2. Set individual song caches
+        cache.set(f"song_{songEntry.songId}", {
+            "songId": songEntry.songId,
+            "songName": songEntry.songName,
+            "songArtist": songEntry.songArtist,
+            "songAlbum": songEntry.songAlbum,
+            "uploadId": songEntry.uploadId,
+            "date": songEntry.date.strftime("%Y-%m-%d %H:%M:%S"),
+        }, timeout=CACHE_TIMEOUT)
+
+        cache.set(f"lyrics_{songEntry.songId}", songEntry.songLyrics, timeout=CACHE_TIMEOUT)
+        cache.set(f"bg_{songEntry.songId}", songEntry.songBg, timeout=CACHE_TIMEOUT)
+        cache.set(f"audio_{songEntry.songId}", songEntry.songAudio, timeout=CACHE_TIMEOUT)
+        cache.set(f"play_{songEntry.songId}_None", songEntry.songId, timeout=CACHE_TIMEOUT)
 
     return render_template("account.html")
 
