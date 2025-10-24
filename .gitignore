@@ -2,3 +2,4 @@ static/assets
 .vscode
 .idea
 .venv
+__pycache__

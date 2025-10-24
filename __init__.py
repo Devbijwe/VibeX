@@ -14,7 +14,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from sqlalchemy.exc import IntegrityError 
 from flask_caching import Cache  # ✅ Added for in-memory caching
+import os
+from dotenv import load_dotenv
 
+load_dotenv()  # loads .env
 with open('config.json',"r") as c:
     params=json.load(c)['params']
 
@@ -25,7 +28,7 @@ CORS(app)
 app.secret_key = 'super-secret-key'
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL") or "postgresql://bytestardb:ByteStarDB@103.194.228.122:5432/vibex-backend" or "postgresql://22devendrabijwe:PToEG2huQ1iv@ep-round-hill-10279815.ap-southeast-1.aws.neon.tech/vibex"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL") or os.environ.get("DATABASE_URL") or  "postgresql://22devendrabijwe:PToEG2huQ1iv@ep-round-hill-10279815.ap-southeast-1.aws.neon.tech/vibex"
  
     
 db= SQLAlchemy(app)
